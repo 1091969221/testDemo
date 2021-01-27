@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--1)mapper接口的全限定名要和mapper映射文件的namespace值一致。
+2)mapper方法名称接口的要和mapper映射文件的statement的id一致。
+3)mapper接口的方法参数类型要和mapper映射文件的statement的parameterType的值一致，而且它的参数是一个。
+4)mapper接口的方法返回值类型要和mapper映射文件的statement的resultType的值一致-->
+<mapper namespace="com.qfedu.onetomany.StudentDao">
+<!--    通过学生查课程-->
+    <resultMap id="studentMap" type="com.qfedu.onetomany.Student">
+        <id column="s_id" property="s_id"></id>
+        <result column="s_name" property="s_name"></result>
+        <result column="s_birth" property="s_birth"></result>
+        <result column="s_sex" property="s_sex"></result>
+
+        <collection property="courseList" javaType="list" ofType="course">
+            <id column="c_id" property="c_id"></id>
+            <result column="c_name" property="c_name"></result>
+        </collection>
+    </resultMap>
+<!--    通过s_id查学生-->
+    <select id="findCourseByS_id" parameterType="int" resultMap="studentMap">
+--         select * from student where s_id=#{s_id}
+--         select student.*,course.c_name from student,score,course where student.s_id = score.s_id and score.c_id = course.c_id and student.s_id=#{s_id}
+--            select * from student,score,course where student.s_id = score.s_id and score.c_id = course.c_id and student.s_id=#{s_id}
+            select st.*,co.* from student st
+            inner join score sc
+            on st.s_id = sc.s_id
+            inner join course co
+            on co.c_id= sc.c_id
+            where st.s_id=#{s_id}
+    </select>
+</mapper>

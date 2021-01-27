@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace  命名空间   必须是唯一的-->
+<mapper namespace="userEntitySpace">
+<!--    结果的映射关系-->
+    <resultMap id="userResult" type="com.qfedu.entity.User">
+<!--     id表示的是主键-->
+        <id column="id" property="id"></id>
+<!--        非主键-->
+        <result column="name" property="name"></result>
+        <result column="password" property="password"></result>
+        <result column="age" property="age"></result>
+        <result column="sex" property="sex"></result>
+    </resultMap>
+<!--    添加-->
+    <insert id="add" parameterType="user">
+        insert into user(name, password, age, sex) values("张三", "法外狂徒", 996, "男")
+    </insert>
+    <insert id="insertData"   parameterType="user" >
+        insert into user(name, password, age, sex) values (#{name}, #{password}, #{age}, #{sex})
+    </insert>
+<!--    删除-->
+    <delete id="delById" parameterType="int">
+        delete from user where id = #{id}
+    </delete>
+<!--    修改-->
+    <update id="upDate" parameterType="user">
+        update user set name=#{name}, password=#{password},age=#{age}, sex=#{sex} where id=#{id}
+    </update>
+<!--    查询-->
+    <select id="selectAll" resultType="user">
+        select * from user
+    </select>
+<!--    <select id="selectOne" parameterType="map" resultMap="userMap">-->
+<!--        select * from user  where id=#{id};-->
+<!--    </select>-->
+    <select id="findOne" parameterType="int" resultType="user">
+        select * from user  where id=#{id};
+    </select>
+</mapper>
